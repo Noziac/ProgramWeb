@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>SkeletonAPP</ion-title>
+    <ion-title>Home</ion-title> 
     <ion-buttons slot="end">
       <ion-button [routerLink]="['/login']">
         Login
@@ -12,34 +12,38 @@
 <ion-content [fullscreen]="true" class="ion-padding">
 
   <h1 class="ion-text-center">¡Bienvenido!</h1>
-  <p>Usuario:</p>
+  <div class="p-container">
+    <p>Usuario:</p>
+    <p *ngIf="loggedInUser">{{ loggedInUser }}</p>
+  </div>
   <h2 class="ion-text-center">Información adicional</h2>
-  <!-- Campo Nombre-->
+
   <ion-item style="font-size: 13px;">
-    <ion-input label="Nombre" placeholder="Ingrese nombre"></ion-input>
+    <ion-input class="placeholder-right" label="Nombre" placeholder="Ingrese nombre" [(ngModel)]="formData.nombre" [@shakeInput]="nombreShakeState"></ion-input> 
   </ion-item>
-  <!-- Campo Apellido-->
+
   <ion-item style="font-size: 13px;">
-    <ion-input label="Apellido" placeholder="Ingrese apellido"></ion-input>
+    <ion-input class="placeholder-right" label="Apellido" placeholder="Ingrese apellido" [(ngModel)]="formData.apellido" [@shakeInput]="apellidoShakeState"></ion-input>
   </ion-item>
-  <!-- Campo Educación-->
+
   <ion-item style="font-size: 13px;">
-    <ion-select label="Nivel Educación" placeholder="Seleccione Nivel">
-      <ion-select-option value="basica">Educación Básica</ion-select-option>
-      <ion-select-option value="media">Educación Media</ion-select-option>
-      <ion-select-option value="superior">Educación Superior</ion-select-option>
+    <ion-select label="Nivel Educación" placeholder="Seleccione Nivel" [(ngModel)]="formData.nivelEducacion">
+      <ion-select-option *ngFor="let nivel of nivelesEducacion" [value]="nivel">{{ nivel }}</ion-select-option>
     </ion-select>
   </ion-item>
-  <!-- Campo Fecha -->
+
   <ion-item style="font-size: 13px;">
-    <ion-input label="Fecha Nacimiento" placeholder="DD/MM/AAAA"></ion-input>
-    <ion-icon icon="calendar-outline" slot="end" color="primary"></ion-icon>
+    <ion-label>Fecha Nacimiento</ion-label>
+    <input ion-input matInput [matDatepicker]="picker" placeholder="MM/DD/AAAA" [(ngModel)]="formData.fechaNacimiento">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
   </ion-item>
-  <!-- Botones -->
+
   <div class="buttons-container ion-margin-top">
-    <ion-button class="ion-margin-top">Limpiar</ion-button>
-    <ion-button class="ion-margin-top">Mostrar</ion-button>
+    <ion-button (click)="clearFields()">Limpiar</ion-button>
+    <ion-button (click)="showInfo()">Mostrar</ion-button>
   </div>
+
 </ion-content>
 
 <ion-footer>

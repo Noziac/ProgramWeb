@@ -32,3 +32,23 @@
   align-items: center;        
   gap: 10px;                  
 }
+
+.p-container {
+  display: flex;   
+  align-items: center;        
+  gap: 10px;                  
+}
+
+ion-content {
+    background: transparent !important; // Quita fondo de la lista
+
+    ion-item {
+        --background: transparent !important; // Quita fondo de los inputs (items)
+    }
+}
+
+// Ponemos el placeholder a la derecha
+.placeholder-right {
+  width: 100%;
+  text-align: right;
+}

@@ -1,4 +1,3 @@
-<!-- Encabezado -->
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
@@ -6,10 +5,9 @@
         Home
       </ion-button>
     </ion-buttons>
-  </ion-toolbar>
+    <ion-title class="ion-text-right">Login</ion-title></ion-toolbar>
 </ion-header>
 
-<!-- Contenido -->
 <ion-content [fullscreen]="true" class="ion-padding">
 
   <h1 class="ion-text-center">SkeletonAPP</h1>
@@ -19,18 +17,23 @@
   <ion-list class="no-box-list ion-padding">
     <ion-item>
       <ion-label position="stacked">Usuario</ion-label>
-      <ion-input type="text" minlength="3" maxlength="8" pattern="[a-zA-Z0-9]*"></ion-input>
+      <ion-input type="text" minlength="3" maxlength="8" pattern="[a-zA-Z0-9]*" [(ngModel)]="datos.user"></ion-input>
     </ion-item>
 
     <ion-item>
       <ion-label position="stacked">Contraseña</ion-label>
-      <ion-input type="password" maxlength="4" pattern="[0-9]{4}"></ion-input>
+      <ion-input type="password" maxlength="4" pattern="[0-9]{4}" [(ngModel)]="datos.pwd"></ion-input>
     </ion-item>
 
-    <ion-button expand="block" class="ion-margin-top">Ingresar</ion-button> 
+    <ion-button [routerLink]="['/home']" expand="block" class="ion-margin-top" (click)="login()" >Ingresar</ion-button>
     <p class="ion-text-center ion-margin-top">
       <a [routerLink]="">Crea tu cuenta gratis</a>
     </p>
 
   </ion-list>
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-title class="ion-text-center">Footer</ion-title> </ion-toolbar>
+</ion-footer>
