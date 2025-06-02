@@ -25,3 +25,10 @@
 #container a {
   text-decoration: none;
 }
+
+.buttons-container {
+  display: flex;   
+  justify-content: space-around; 
+  align-items: center;        
+  gap: 10px;                  
+}

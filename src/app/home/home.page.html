@@ -1,20 +1,49 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
+    <ion-title>SkeletonAPP</ion-title>
+    <ion-buttons slot="end">
+      <ion-button [routerLink]="['/login']">
+        Login
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content [fullscreen]="true" class="ion-padding">
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+  <h1 class="ion-text-center">¡Bienvenido!</h1>
+  <p>Usuario:</p>
+  <h2 class="ion-text-center">Información adicional</h2>
+  <!-- Campo Nombre-->
+  <ion-item style="font-size: 13px;">
+    <ion-input label="Nombre" placeholder="Ingrese nombre"></ion-input>
+  </ion-item>
+  <!-- Campo Apellido-->
+  <ion-item style="font-size: 13px;">
+    <ion-input label="Apellido" placeholder="Ingrese apellido"></ion-input>
+  </ion-item>
+  <!-- Campo Educación-->
+  <ion-item style="font-size: 13px;">
+    <ion-select label="Nivel Educación" placeholder="Seleccione Nivel">
+      <ion-select-option value="basica">Educación Básica</ion-select-option>
+      <ion-select-option value="media">Educación Media</ion-select-option>
+      <ion-select-option value="superior">Educación Superior</ion-select-option>
+    </ion-select>
+  </ion-item>
+  <!-- Campo Fecha -->
+  <ion-item style="font-size: 13px;">
+    <ion-input label="Fecha Nacimiento" placeholder="DD/MM/AAAA"></ion-input>
+    <ion-icon icon="calendar-outline" slot="end" color="primary"></ion-icon>
+  </ion-item>
+  <!-- Botones -->
+  <div class="buttons-container ion-margin-top">
+    <ion-button class="ion-margin-top">Limpiar</ion-button>
+    <ion-button class="ion-margin-top">Mostrar</ion-button>
   </div>
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-title style="font-size: 13px;">App desarrollada por Jorge Rivas</ion-title>
+  </ion-toolbar>
+</ion-footer>

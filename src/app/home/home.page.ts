@@ -8,6 +8,13 @@ import { Component } from '@angular/core';
 })
 export class HomePage {
 
+  formData = {
+    nombre: '',
+    apellido: '',
+    nivelEducacion: '',
+    fechaNacimiento: null as any
+  };
+  
   constructor() {}
 
 }

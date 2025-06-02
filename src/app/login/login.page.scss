@@ -1,0 +1,7 @@
+.no-box-list {
+    background: transparent !important; // Quita fondo de la lista
+
+    ion-item {
+        --background: transparent !important; // Quita fondo de los inputs (items)
+    }
+}
