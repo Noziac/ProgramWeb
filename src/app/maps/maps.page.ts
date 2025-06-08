@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
   selector: 'app-maps',
   templateUrl: './maps.page.html',
   styleUrls: ['./maps.page.scss'],
+  standalone: false
 })
 export class MapsPage implements OnInit {
 

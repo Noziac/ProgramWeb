@@ -1,13 +1,34 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>agents</ion-title>
-  </ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button> </ion-buttons>
+    <ion-title>Agentes de VALORANT</ion-title> </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">agents</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" size-md="6" size-lg="4" *ngFor="let agente of agentes">
+        <ion-card>
+          <img *ngIf="agente.imagen" [src]="agente.imagen" alt="Imagen de {{agente.alias}}">
+
+          <ion-card-header>
+            <ion-card-title>{{ agente.alias }}</ion-card-title>
+            <ion-card-subtitle>{{ agente.rol }}</ion-card-subtitle>
+          </ion-card-header>
+
+          <ion-card-content>
+            <p><strong>Nombre Real:</strong> {{ agente.nombreReal }}</p>
+            <p><strong>Edad Estimada:</strong> {{ agente.edadEstimada || 'N/A' }}</p> <p><strong>País de Origen:</strong> {{ agente.paisOrigen }}</p>
+
+            <ion-button expand="full" fill="clear" [routerLink]="['/agente-detalle', agente.id]">
+              Ver Habilidades
+            </ion-button>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
 </ion-content>

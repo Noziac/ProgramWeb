@@ -1,4 +1,4 @@
-export const lista_agentes = [
+export const listaAgentes = [
     {
         id: 1,
         alias: 'Jett',
