@@ -6,19 +6,12 @@ import { HomePage } from './home.page';
 
 import { HomePageRoutingModule } from './home-routing.module';
 
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatInputModule } from '@angular/material/input';
-import { MatNativeDateModule } from '@angular/material/core';
-
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
     HomePageRoutingModule,
-    MatDatepickerModule,
-    MatInputModule,
-    MatNativeDateModule,
   ],
   declarations: [HomePage]
 })

@@ -1,0 +1,56 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>Perfil</ion-title> 
+        <ion-buttons slot="end">
+            <ion-button [routerLink]="['/home']">
+              Home
+            </ion-button>
+            <ion-button [routerLink]="['/login']">
+              Logout
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+
+  <h1 class="ion-text-center">¡Bienvenido!</h1>
+  <div class="p-container">
+    <p>Usuario:</p>
+    <p *ngIf="loggedInUser">{{ loggedInUser }}</p>
+  </div>
+  <h2 class="ion-text-center">Información adicional</h2>
+
+  <ion-item style="font-size: 13px;">
+    <ion-input class="placeholder-right" label="Nombre" placeholder="Ingrese nombre" [(ngModel)]="formData.nombre" [@shakeInput]="nombreShakeState"></ion-input> 
+  </ion-item>
+
+  <ion-item style="font-size: 13px;">
+    <ion-input class="placeholder-right" label="Apellido" placeholder="Ingrese apellido" [(ngModel)]="formData.apellido" [@shakeInput]="apellidoShakeState"></ion-input>
+  </ion-item>
+
+  <ion-item style="font-size: 13px;">
+    <ion-select label="Nivel Educación" placeholder="Seleccione Nivel" [(ngModel)]="formData.nivelEducacion">
+      <ion-select-option *ngFor="let nivel of nivelesEducacion" [value]="nivel">{{ nivel }}</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item style="font-size: 13px;">
+    <ion-label>Fecha Nacimiento</ion-label>
+    <input ion-input matInput [matDatepicker]="picker" placeholder="MM/DD/AAAA" [(ngModel)]="formData.fechaNacimiento">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </ion-item>
+
+  <div class="buttons-container ion-margin-top">
+    <ion-button (click)="clearFields()">Limpiar</ion-button>
+    <ion-button (click)="showInfo()">Mostrar</ion-button>
+  </div>
+
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-title style="font-size: 13px;">App desarrollada por Jorge Rivas</ion-title>
+  </ion-toolbar>
+</ion-footer>

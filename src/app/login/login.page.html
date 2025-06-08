@@ -1,11 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-button [routerLink]="['/home']">
-        Home
-      </ion-button>
-    </ion-buttons>
-    <ion-title class="ion-text-right">Login</ion-title></ion-toolbar>
+    <ion-title class="ion-text-left">Login</ion-title></ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true" class="ion-padding">
@@ -25,15 +20,10 @@
       <ion-input type="password" maxlength="4" pattern="[0-9]{4}" [(ngModel)]="datos.pwd"></ion-input>
     </ion-item>
 
-    <ion-button [routerLink]="['/home']" expand="block" class="ion-margin-top" (click)="login()" >Ingresar</ion-button>
+    <ion-button expand="block" class="ion-margin-top" (click)="login()" >Ingresar</ion-button>
     <p class="ion-text-center ion-margin-top">
       <a [routerLink]="">Crea tu cuenta gratis</a>
     </p>
 
   </ion-list>
 </ion-content>
-
-<ion-footer>
-  <ion-toolbar>
-    <ion-title class="ion-text-center">Footer</ion-title> </ion-toolbar>
-</ion-footer>
