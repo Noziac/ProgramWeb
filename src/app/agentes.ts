@@ -48,7 +48,7 @@ export const listaAgentes = [
         id: 6,
         alias: 'Iso',
         nombreReal: 'Li Zhao Yu',
-        edadEstimada: '',
+        edadEstimada: '20 a 30 años',
         paisOrigen: 'China',
         rol: 'Duelista',
         imagen: 'assets/img/agents/iso.png'

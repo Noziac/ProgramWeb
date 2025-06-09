@@ -1,23 +1,22 @@
 <ion-header>
-    <ion-toolbar>
-        <ion-title>Perfil</ion-title> 
-        <ion-buttons slot="end">
-            <ion-button [routerLink]="['/home']">
-              Home
-            </ion-button>
-            <ion-button [routerLink]="['/login']">
-              Logout
-            </ion-button>
-        </ion-buttons>
-    </ion-toolbar>
+  <ion-toolbar>
+    <ion-title>Perfil</ion-title> 
+    <ion-buttons slot="end">
+      <ion-button [routerLink]="['/home']" lines="full">
+        Inicio
+      </ion-button>
+      <ion-button (click)="logout()" lines="full">
+        Cerrar Sesión
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true" class="ion-padding">
 
   <h1 class="ion-text-center">¡Bienvenido!</h1>
   <div class="p-container">
-    <p>Usuario:</p>
-    <p *ngIf="loggedInUser">{{ loggedInUser }}</p>
+    <p>Usuario: <strong>{{ loggedInUser || 'No disponible' }}</strong></p> 
   </div>
   <h2 class="ion-text-center">Información adicional</h2>
 
@@ -30,8 +29,8 @@
   </ion-item>
 
   <ion-item style="font-size: 13px;">
-    <ion-select label="Nivel Educación" placeholder="Seleccione Nivel" [(ngModel)]="formData.nivelEducacion">
-      <ion-select-option *ngFor="let nivel of nivelesEducacion" [value]="nivel">{{ nivel }}</ion-select-option>
+    <ion-select label="Rango" placeholder="Seleccione rango" [(ngModel)]="formData.rango">
+      <ion-select-option *ngFor="let nivel of rango" [value]="nivel">{{ nivel }}</ion-select-option>
     </ion-select>
   </ion-item>
 

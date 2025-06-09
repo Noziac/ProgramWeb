@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 
@@ -23,18 +23,18 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
   ]
 })
 
-export class ProfilePage {
+export class ProfilePage implements OnInit {
 
   loggedInUser: string | null = null;
 
   formData = {
     nombre: '',
     apellido: '',
-    nivelEducacion: '',
+    rango: '',
     fechaNacimiento: ''
   };
 
-  nivelesEducacion: string[] = ['Educación Básica', 'Educación Media', 'Educación Superior'];
+  rango: string[] = ['Hierro', 'Bronce', 'Plata', 'Oro', 'Platino', 'Diamante', 'Ascendente', 'Inmortal', 'Radiante'];
 
   nombreShakeState: string = 'inactive';
   apellidoShakeState: string = 'inactive';
@@ -46,17 +46,14 @@ export class ProfilePage {
   ) { }
 
   ngOnInit() {
-    const navigation = this.router.getCurrentNavigation();
-    if (navigation && navigation.extras && navigation.extras.state) {
-      this.loggedInUser = navigation.extras.state['loggedInUser'];
-    }
+    this.loggedInUser = localStorage.getItem('loggedInUser');
   }
 
   clearFields() {
     this.formData = {
       nombre: '',
       apellido: '',
-      nivelEducacion: '',
+      rango: '',
       fechaNacimiento: ''
     };
 
@@ -91,5 +88,12 @@ export class ProfilePage {
       buttons: ['OK']
     });
     await alert.present();
+  }
+
+  // metodo para simular un logout
+  logout() {
+    localStorage.removeItem('loggedInUser'); // Eliminar el usuario de localStorage
+    this.loggedInUser = null;
+    this.router.navigateByUrl('/login'); // Redirigir al login
   }
 }
