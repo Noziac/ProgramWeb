@@ -6,7 +6,7 @@ export const listaAgentes = [
         edadEstimada: '20 a 25 años',
         paisOrigen: 'Corea del Sur',
         rol: 'Duelista',
-        imagen: 'assets/img/jett.png'
+        imagen: 'assets/img/agents/jett.png'
     },
     {
         id: 2,
@@ -15,7 +15,7 @@ export const listaAgentes = [
         edadEstimada: '30 a 35 años',
         paisOrigen: 'Suecia',
         rol: 'Iniciador',
-        imagen: 'assets/img/breach.png'
+        imagen: 'assets/img/agents/breach.png'
     },
     {
         id: 3,
@@ -24,7 +24,7 @@ export const listaAgentes = [
         edadEstimada: '25 a 30 años',
         paisOrigen: 'China',
         rol: 'Centinela',
-        imagen: 'assets/img/sage.png'
+        imagen: 'assets/img/agents/sage.png'
     },
     {
         id: 4,
@@ -33,7 +33,7 @@ export const listaAgentes = [
         edadEstimada: '25 a 30 años',
         paisOrigen: 'Japón',
         rol: 'Duelista',
-        imagen: 'assets/img/yoru.png'
+        imagen: 'assets/img/agents/yoru.png'
     },
     {
         id: 5,
@@ -42,7 +42,7 @@ export const listaAgentes = [
         edadEstimada: '20 a 25 años',
         paisOrigen: 'Alemania',
         rol: 'Centinela',
-        imagen: 'assets/img/killjoy.png'
+        imagen: 'assets/img/agents/killjoy.png'
     },
     {
         id: 6,
@@ -51,6 +51,6 @@ export const listaAgentes = [
         edadEstimada: '',
         paisOrigen: 'China',
         rol: 'Duelista',
-        imagen: 'assets/img/iso.png'
+        imagen: 'assets/img/agents/iso.png'
     }
 ]

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { listaMapas } from '../mapas';
 
 @Component({
   selector: 'app-maps',
@@ -8,9 +9,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MapsPage implements OnInit {
 
+  mapas: any[] = [];
+
   constructor() { }
 
   ngOnInit() {
+    this.mapas = listaMapas;
   }
 
 }

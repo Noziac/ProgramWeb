@@ -6,16 +6,14 @@
       <ion-title>Categorías</ion-title>
     </ion-toolbar>
   </ion-header>
-  <ion-content id="side-content">
+  <ion-content>
     <ion-list>
-        <ul>
-            <ion-item [routerLink]="['/profile']" lines="full">
-                <ion-label>Perfil</ion-label>
-            </ion-item>
-            <ion-item [routerLink]="['/profile']" lines="full">
-                <ion-label>Logout</ion-label>
-            </ion-item>
-        </ul>
+      <ion-item [routerLink]="['/profile']" lines="full">
+          <ion-label>Perfil</ion-label>
+      </ion-item>
+      <ion-item [routerLink]="['/profile']" lines="full">
+          <ion-label>Logout</ion-label>
+      </ion-item>
     </ion-list>
   </ion-content>
 </ion-menu>
@@ -28,11 +26,11 @@
       <ion-title>Inicio</ion-title>
     </ion-toolbar>
   </ion-header>
-  <ion-content class="ion-padding">
+  <ion-content id="contenido" class="ion-padding">
     <ion-grid>
         <ion-row class="ion-justify-content-center ion-align-items-center">
             <ion-col size="12" size-md="6" class="ion-text-center">
-            <ion-card [routerLink]="['/agents']" routerLinkActive="router-link-active">
+            <ion-card id="agentes" [routerLink]="['/agents']" routerLinkActive="router-link-active">
                 <ion-card-header>
                 <ion-card-title>Agentes</ion-card-title>
                 </ion-card-header>
@@ -43,7 +41,7 @@
             </ion-card>
             </ion-col>
             <ion-col size="12" size-md="6" class="ion-text-center">
-            <ion-card [routerLink]="['/maps']" routerLinkActive="router-link-active">
+            <ion-card id="mapas" [routerLink]="['/maps']" routerLinkActive="router-link-active">
                 <ion-card-header>
                 <ion-card-title>Mapas</ion-card-title>
                 </ion-card-header>

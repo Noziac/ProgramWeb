@@ -3,3 +3,21 @@ ion-menu {
   --max-width: 300px;
 }
 
+ion-list {
+  background-color: transparent;
+  --background: transparent !important;
+}
+
+ion-item {
+  background-color: red;
+}
+
+#agentes {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../../assets/img/backgrounds/agentes.png');
+  background-size: cover;
+}
+
+#mapas {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../../assets/img/backgrounds/mapas.png');
+  background-size: cover;
+}
