@@ -7,27 +7,36 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <ion-grid>
+<ion-content class="ion-padding" [fullscreen]="true">
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content pullingText="Tira para refrescar..." refreshingText="Refrescando..."></ion-refresher-content>
+  </ion-refresher>
+
+  <div *ngIf="isLoading" class="ion-text-center ion-padding-top">
+    <ion-spinner name="circles" color="primary"></ion-spinner>
+    <p>Cargando mapas...</p>
+  </div>
+
+  <ion-text color="danger" class="ion-padding" *ngIf="errorMessage">
+    <p>{{ errorMessage }}</p>
+    <p>Por favor, revisa tu conexión a internet o intenta recargar.</p>
+  </ion-text>
+
+  <ion-grid *ngIf="!isLoading && !errorMessage && mapas.length > 0">
     <ion-row>
       <ion-col size="12" size-md="6" size-lg="4" *ngFor="let mapa of mapas">
-        <ion-card #cardElement> <img *ngIf="mapa.imagen" [src]="mapa.imagen" alt="Imagen de {{mapa.nombreMapa}}">
+        <ion-card #cardElement>
+          <img *ngIf="mapa.imagen" [src]="mapa.imagen" alt="Imagen de {{mapa.nombreMapa}}">
 
           <ion-card-header>
             <ion-card-title>{{ mapa.nombreMapa }}</ion-card-title>
-            <ion-card-subtitle>
-              Modo Competitivo:
-              <ion-icon [name]="mapa.competitivo === 'Habilitado' ? 'checkmark-circle-outline' : 'close-circle-outline'"
-                        [color]="mapa.competitivo === 'Habilitado' ? 'success' : 'danger'"></ion-icon>
-            </ion-card-subtitle>
-          </ion-card-header>
-
-          <ion-card-content>
-            <p>{{ mapa.descripcion }}</p>
-            <p><strong>Modos Disponibles:</strong> {{ mapa.modosDisponibles }}</p>
-          </ion-card-content>
+            </ion-card-header>
         </ion-card>
       </ion-col>
     </ion-row>
   </ion-grid>
+
+  <div *ngIf="!isLoading && !errorMessage && mapas.length === 0" class="ion-padding ion-text-center">
+    <p>No se encontraron mapas.</p>
+  </div>
 </ion-content>

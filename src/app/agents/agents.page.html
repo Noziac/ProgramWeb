@@ -7,11 +7,26 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <ion-grid>
+<ion-content class="ion-padding" [fullscreen]="true">
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content pullingText="Tira para refrescar..." refreshingText="Refrescando..."></ion-refresher-content>
+  </ion-refresher>
+
+  <div *ngIf="isLoading" class="ion-text-center ion-padding-top">
+    <ion-spinner name="circles" color="primary"></ion-spinner>
+    <p>Cargando agentes...</p>
+  </div>
+
+  <ion-text color="danger" class="ion-padding" *ngIf="errorMessage">
+    <p>{{ errorMessage }}</p>
+    <p>Por favor, revisa tu conexión a internet o intenta recargar.</p>
+  </ion-text>
+
+  <ion-grid *ngIf="!isLoading && !errorMessage && agentes.length > 0">
     <ion-row>
       <ion-col size="12" size-md="6" size-lg="4" *ngFor="let agente of agentes">
-        <ion-card #cardElement> <img *ngIf="agente.imagen" [src]="agente.imagen" alt="Imagen de {{agente.alias}}">
+        <ion-card #cardElement>
+          <img *ngIf="agente.imagen" [src]="agente.imagen" alt="Imagen de {{agente.alias}}">
 
           <ion-card-header>
             <ion-card-title>{{ agente.alias }}</ion-card-title>
@@ -19,16 +34,28 @@
           </ion-card-header>
 
           <ion-card-content>
-            <p><strong>Nombre Real:</strong> {{ agente.nombreReal }}</p>
-            <p><strong>Edad Estimada:</strong> {{ agente.edadEstimada || 'N/A' }}</p>
-            <p><strong>País de Origen:</strong> {{ agente.paisOrigen }}</p>
+            <ion-item-divider>
+              <p>Habilidades</p>
+            </ion-item-divider>
 
-            <ion-button expand="full" fill="clear" [routerLink]="['/agente-detalle', agente.id]">
-              Ver Habilidades
-            </ion-button>
-          </ion-card-content>
+            <ion-list lines="none" *ngIf="agente.abilities && agente.abilities.length > 0">
+              <ion-item *ngFor="let habilidad of agente.abilities">
+                <ion-thumbnail slot="start" *ngIf="habilidad.displayIcon">
+                  <img [src]="habilidad.displayIcon" alt="Icono de habilidad">
+                </ion-thumbnail>
+                <ion-label>
+                  <h3>{{ habilidad.displayName }}</h3>
+                </ion-label>
+              </ion-item>
+            </ion-list>
+
+            </ion-card-content>
         </ion-card>
       </ion-col>
     </ion-row>
   </ion-grid>
+
+  <div *ngIf="!isLoading && !errorMessage && agentes.length === 0" class="ion-padding ion-text-center">
+    <p>No se encontraron agentes.</p>
+  </div>
 </ion-content>

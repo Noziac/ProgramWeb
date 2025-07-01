@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, NavigationExtras } from '@angular/router';
-import { AlertController } from '@ionic/angular';
+import { Router } from '@angular/router';
+import { DbService } from '../services/db.service'; 
+import { AlertController, LoadingController } from '@ionic/angular';
+import { firstValueFrom } from 'rxjs'; 
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
@@ -9,53 +12,75 @@ import { AlertController } from '@ionic/angular';
   standalone: false
 })
 export class LoginPage implements OnInit {
+  username: string = '';
+  password: string = '';
 
-  // Objeto para almacenar los datos de usuario y contraseña desde el formulario
-  datos = {
-    user: '',    // Vinculado a [(ngModel)]="datos.user"
-    pwd: ''      // Vinculado a [(ngModel)]="datos.pwd"
-  };
+  isLoading: boolean = false;
 
-  constructor(
-    private router: Router,
-    private alertController: AlertController
-  ) { }
+  constructor(private router: Router, private dbService: DbService, private alertController: AlertController, private loadingController: LoadingController) {}
 
-  ngOnInit() {
-    // Opcional: limpiar los campos al cargar la página de login
-    this.datos = { user: '', pwd: '' };
+  async ngOnInit() {
+    console.log('LoginPage: ngOnInit.');
+
+    // Esperar a que la base de datos esté lista
+    console.log('LoginPage: Esperando a que DbService esté listo...');
+    // Usamos firstValueFrom para esperar a que isDbReady emita true la primera vez
+    await firstValueFrom(this.dbService.dbState().pipe(
+      // Filtrar hasta que isDbReady sea true
+      // Si ya es true cuando se suscribe, emitirá inmediatamente.
+      filter(isReady => isReady)
+    ));
+    console.log('LoginPage: DbService está listo. Verificando sesión activa.');
+
+    const isAuthenticated = await this.dbService.checkActiveSession();
+    if (isAuthenticated) {
+      const currentUser = await this.dbService.getCurrentUser();
+      console.log(`LoginPage: Sesión activa detectada al cargar. Redirigiendo a /home. Usuario: ${currentUser}`);
+      this.router.navigateByUrl('/home', { replaceUrl: true, state: { loggedInUser: currentUser } });
+    } else {
+      console.log('LoginPage: No hay sesión activa al cargar.');
+    }
   }
 
-  // Método que se ejecuta al hacer clic en el botón "Ingresar"
   async login() {
-    // --- VALIDACIONES DE REQUERIMIENTOS ---
-    // Usuario: alfanumérico, 3 a 8 caracteres
-    const usernameRegex = /^[a-zA-Z0-9]{3,8}$/;
-    // Contraseña: numérica, 4 dígitos
-    const passwordRegex = /^[0-9]{4}$/;
+    console.log(`LoginPage: Intentando login para ${this.username}.`);
 
-    if (!usernameRegex.test(this.datos.user)) {
-      await this.presentAlert('Error de Usuario', 'El usuario debe ser alfanumérico y tener entre 3 y 8 caracteres.');
-      return; // Detiene la ejecución si la validación falla
-    }
+    // 1. Muestra la pantalla de carga (LoadingController)
+    const loading = await this.loadingController.create({
+      message: 'Iniciando sesión...', // Mensaje a mostrar al usuario
+      spinner: 'crescent' // Más tipos de spinner: 'crescent', 'dots', 'bubbles', 'circles', 'lines'
+    });
+    await loading.present();
 
-    if (!passwordRegex.test(this.datos.pwd)) {
-      await this.presentAlert('Error de Contraseña', 'La contraseña debe ser numérica y de 4 dígitos.');
-      return; // Detiene la ejecución si la validación falla
-    }
+    try {
+      // 2. Intenta hacer login a través de tu DbService
+      const success = await this.dbService.login(this.username, this.password);
 
-    // Si las validaciones pasan, preparamos los datos para enviar a la página Home
-    let navigationExtras: NavigationExtras = {
-      state: {
-        loggedInUser: this.datos.user // Enviamos solo el nombre de usuario
+      if (success) {
+        // 3. Si el login es exitoso
+        const currentUser = await this.dbService.getCurrentUser();
+        console.log('LoginPage: Login exitoso. Redirigiendo a /home.');
+        // Ocultar el loading ANTES de la redirección,
+        await loading.dismiss();
+        this.router.navigateByUrl('/home', { replaceUrl: true, state: { loggedInUser: currentUser } });
+      } else {
+        // 4. Si el login falla
+        await loading.dismiss(); // Oculta el loading si las credenciales son incorrectas
+        this.presentAlert('Error de Login', 'Usuario o contraseña incorrectos.');
+        console.log('LoginPage: Login fallido.');
       }
-    };
-
-    // Navegar a la página Home. El `router.navigate` por defecto "cierra" la página actual.
-    this.router.navigate(['/home'], navigationExtras);
+    } catch (error) {
+      // 5. Manejo de cualquier error inesperado durante el proceso de login
+      await loading.dismiss(); // Oculta el loading si hay un error en la promesa
+      console.error('Error durante el login:', error);
+      this.presentAlert('Error', 'Ha ocurrido un error inesperado al intentar iniciar sesión.');
+    }
   }
 
-  // Función de utilidad para mostrar alertas al usuario
+  goToRegister() {
+    this.router.navigateByUrl('/register');
+  }
+
   async presentAlert(header: string, message: string) {
     const alert = await this.alertController.create({
       header: header,

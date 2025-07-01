@@ -1,6 +1,10 @@
-import { Component, OnInit, AfterViewInit, QueryList, ViewChildren, ElementRef } from '@angular/core';
+import { Component, OnInit, AfterViewInit, QueryList, ViewChildren, ElementRef, OnDestroy } from '@angular/core';
 import { AnimationController } from '@ionic/angular';
-import { listaAgentes } from '../agentes';
+import { ValorantApiService } from '../services/valorant-api.service';
+import { AgentData } from '../interfaces/valorant-api.interface';
+import { LocalAgentModel } from '../interfaces/local-agent-model.interface';
+import { Subscription } from 'rxjs';
+import { translations } from '../translations/es';
 
 @Component({
   selector: 'app-agents',
@@ -8,41 +12,74 @@ import { listaAgentes } from '../agentes';
   styleUrls: ['./agents.page.scss'],
   standalone: false
 })
-export class AgentsPage implements OnInit, AfterViewInit {
+export class AgentsPage implements OnInit, AfterViewInit, OnDestroy {
 
-  agentes: any[] = [];
+  agentes: LocalAgentModel[] = [];
+  isLoading: boolean = false;
+  errorMessage: string | null = null;
+  private agentsSubscription: Subscription | undefined;
 
-  // Decorador para obtener referencias a múltiples elementos
-  // QueryList permite iterar sobre todos los elementos <ion-card> con la referencia 'cardElement'
   @ViewChildren('cardElement', { read: ElementRef }) cardElements!: QueryList<ElementRef>;
 
   constructor(
-    private animationCtrl: AnimationController
+    private animationCtrl: AnimationController,
+    private valorantApiService: ValorantApiService
   ) { }
 
   ngOnInit() {
-    this.agentes = listaAgentes;
+    this.loadAgents();
   }
 
-  // Se ejecuta después de que la vista ha sido completamente renderizada
-  ngAfterViewInit() {
-    // Verificar si se han encontrado elementos de tarjeta
-    if (this.cardElements && this.cardElements.length > 0) {
-      // Iterar sobre cada tarjeta encontrada para aplicar una animación individual
-      this.cardElements.forEach((elementRef: ElementRef, index: number) => {
-        // Llamar a la función de animación para cada tarjeta, con un retraso escalonado
-        this.animateCardFadeIn(elementRef.nativeElement, index * 80); // 80ms de retraso entre cada tarjeta
-      });
-    }
+  loadAgents() {
+    this.isLoading = true;
+    this.errorMessage = null;
+
+    this.agentsSubscription = this.valorantApiService.getAgents().subscribe({
+      next: (apiAgents: AgentData[]) => {
+        this.agentes = apiAgents.map(agent => {
+          const translatedDescription = translations[agent.description] || agent.description;
+
+          // Mapear y traducir las habilidades
+          const translatedAbilities = agent.abilities.map(ability => ({
+            slot: ability.slot,
+            displayName: translations[ability.displayName] || ability.displayName,
+            description: translations[ability.description] || ability.description,
+            displayIcon: ability.displayIcon
+          }));
+
+          return {
+            id: agent.uuid,
+            alias: agent.displayName,
+            rol: agent.role?.displayName || 'Desconocido',
+            imagen: agent.fullPortrait || agent.bustPortrait || agent.displayIcon,
+            abilities: translatedAbilities // Asignamos las habilidades mapeadas y traducidas
+          };
+        });
+        this.isLoading = false;
+        console.log('Agentes cargados y mapeados con habilidades y traducciones:', this.agentes);
+
+        setTimeout(() => {
+          if (this.cardElements && this.cardElements.length > 0) {
+            this.cardElements.forEach((elementRef: ElementRef, index: number) => {
+              this.animateCardFadeIn(elementRef.nativeElement, index * 80);
+            });
+          }
+        }, 0);
+      },
+      error: (err) => {
+        this.errorMessage = 'No se pudieron cargar los agentes. ' + err.message;
+        this.isLoading = false;
+        console.error('Error al cargar agentes:', err);
+      }
+    });
   }
 
-  // Método asíncrono para animar la aparición
+  ngAfterViewInit() { }
+
   async animateCardFadeIn(element: HTMLElement, delay: number = 0) {
-    // Establecer el estado inicial del elemento antes de la animación (invisible y ligeramente desplazado hacia abajo)
     element.style.opacity = '0';
     element.style.transform = 'translateY(20px)';
 
-    // Crear una nueva animación utilizando el AnimationController de Ionic
     const animation = this.animationCtrl.create()
       .addElement(element)
       .duration(500)
@@ -51,7 +88,19 @@ export class AgentsPage implements OnInit, AfterViewInit {
       .fromTo('opacity', '0', '1')
       .fromTo('transform', 'translateY(20px)', 'translateY(0px)');
 
-    // Reproducir la animación
     await animation.play();
+  }
+
+  ngOnDestroy() {
+    if (this.agentsSubscription) {
+      this.agentsSubscription.unsubscribe();
+    }
+  }
+
+  handleRefresh(event: any) {
+    this.loadAgents();
+    setTimeout(() => {
+      event.target.complete();
+    }, 1000);
   }
 }

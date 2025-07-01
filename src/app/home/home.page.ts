@@ -1,6 +1,7 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AnimationController } from '@ionic/angular';
+import { DbService } from '../services/db.service';
 
 @Component({
   selector: 'app-home',
@@ -21,31 +22,30 @@ export class HomePage implements OnInit {
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute, // Para acceder al 'state' de la navegación
-    private animationCtrl: AnimationController
+    private animationCtrl: AnimationController,
+    private dbService: DbService
   ) { }
 
-  ngOnInit() {
-    this.activatedRoute.queryParams.subscribe(() => {
+  async ngOnInit() {
+    this.activatedRoute.queryParams.subscribe(async () => {
       const navigation = this.router.getCurrentNavigation();
-      if (navigation && navigation.extras.state) { // Verificar si navigation y navigation.extras.state existen
+      if (navigation && navigation.extras.state) {
         const state = navigation.extras.state;
-        if (state && typeof state['loggedInUser'] === 'string') { // Asegurarse de que loggedInUser es un string
+        if (state && typeof state['loggedInUser'] === 'string') {
           this.loggedInUser = state['loggedInUser'];
-          localStorage.setItem('loggedInUser', this.loggedInUser);
-          console.log('Usuario recibido en Home y guardado:', this.loggedInUser);
+          console.log('Usuario recibido en Home (vía state):', this.loggedInUser);
         }
       }
     });
 
-    // Al cargar Home, verificar si ya hay un usuario en localStorage
-    // Esto es útil si el usuario navega a Home directamente o recarga la página.
-    if (!this.loggedInUser) { // Si no lo recibimos por state.
-      this.loggedInUser = localStorage.getItem('loggedInUser');
-    }
-
-    // Redirigir al login si no existe usuario.
-    if (!this.loggedInUser) {
-      this.router.navigateByUrl('/login');
+    // Siempre verifica la sesión con DbService al cargar Home
+    const hasActiveSession = await this.dbService.checkActiveSession();
+    if (hasActiveSession) {
+      this.loggedInUser = await this.dbService.getCurrentUser(); // Obtener el usuario desde DbService
+      console.log('Home: Sesión activa confirmada desde DbService para:', this.loggedInUser);
+    } else {
+      console.log('Home: No hay sesión activa. Redirigiendo a /login.');
+      this.router.navigateByUrl('/login', { replaceUrl: true }); // Redirigir si no hay sesión activa
     }
   }
 
@@ -89,9 +89,10 @@ export class HomePage implements OnInit {
 
 
   // metodo para simular un logout
-  logout() {
-    localStorage.removeItem('loggedInUser'); // Eliminar el usuario de localStorage
-    this.loggedInUser = null;
-    this.router.navigateByUrl('/login'); // Redirigir al login
+  async logout() {
+    console.log('HomePage: Iniciando logout a través de DbService.');
+    await this.dbService.logout(); // Llama al logout del DbService
+    this.loggedInUser = null; // Limpia la variable local después de un logout exitoso
+    this.router.navigateByUrl('/login', { replaceUrl: true }); // Redirigir al login
   }
 }

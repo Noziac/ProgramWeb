@@ -4,7 +4,7 @@ ion-menu {
 }
 
 ion-menu ion-header ion-toolbar {
-  --color: white;
+  --color: rgb(25, 25, 25);
 }
 
 ion-menu ion-content {
@@ -32,7 +32,7 @@ ion-item ion-label {
 }
 
 #contenido {
-  background-color: rgb(0, 0, 0);
+  background-color: rgb(25, 25, 25);
 }
 
 ion-card {
@@ -63,4 +63,14 @@ ion-card {
 ion-card-title {
   font-size: 1.5em;
   font-weight: bold;
+}
+
+ion-header {
+    ion-toolbar {
+        --background: rgb(254, 86, 86);
+        --color: white;
+        ion-title{
+          --color: white;
+        }
+    }
 }

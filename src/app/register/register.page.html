@@ -1,0 +1,52 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Registro</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/login"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <div class="register-container">
+    <h1>Crea tu Cuenta</h1>
+
+    <ion-list>
+      <ion-item>
+        <ion-input label="Nombre de Usuario" placeholder="Elige un nombre de usuario" [(ngModel)]="formData.username"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input label="Contraseña" type="password" placeholder="Crea tu contraseña" [(ngModel)]="formData.password"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input label="Confirmar Contraseña" type="password" placeholder="Repite tu contraseña" [(ngModel)]="formData.confirmPassword"></ion-input>
+      </ion-item>
+
+      <ion-item class="ion-margin-top">
+        <ion-input label="Nombre" placeholder="Tu nombre" [(ngModel)]="formData.nombre"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input label="Apellido" placeholder="Tu apellido" [(ngModel)]="formData.apellido"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Fecha de Nacimiento</ion-label>
+        <ion-input type="date" [(ngModel)]="formData.fechaNacimiento"></ion-input>
+      </ion-item>
+
+    </ion-list>
+
+    <ion-button expand="block" class="ion-margin-top" (click)="register()">Registrar</ion-button>
+
+    <p class="ion-text-center ion-margin-top">
+      ¿Ya tienes una cuenta? <a (click)="goToLogin()">Inicia Sesión aquí</a>
+    </p>
+
+  </div>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-title style="font-size: 13px;">App desarrollada por Jorge Rivas</ion-title>
+  </ion-toolbar>
+</ion-footer>

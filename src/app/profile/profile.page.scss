@@ -52,3 +52,41 @@ ion-content {
   width: 100%;
   text-align: right;
 }   
+
+ion-header {
+    ion-toolbar {
+        --background: rgb(254, 86, 86);
+        --color: white;
+    }
+}
+
+.profile-container {
+  max-width: 600px; // O el ancho que prefieras
+  margin: 20px auto; // Centra el contenedor
+  padding: 20px;
+  background: var(--ion-background-color); // Utiliza el color de fondo de Ionic
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.profile-image-section {
+  margin-bottom: 20px;
+
+  .profile-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--ion-color-primary); // Borde con color primario
+    margin-bottom: 10px;
+    display: block; // Para centrarlo con margin auto
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+ion-item-divider {
+  margin-top: 20px;
+  --background: var(--ion-color-light); // Color de fondo para el divisor
+  --color: var(--ion-color-medium); // Color del texto del divisor
+}

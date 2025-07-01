@@ -1,6 +1,7 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title class="ion-text-left">Login</ion-title></ion-toolbar>
+    <ion-title class="ion-text-left">Login</ion-title>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true" class="ion-padding">
@@ -12,18 +13,22 @@
   <ion-list class="no-box-list ion-padding">
     <ion-item>
       <ion-label position="stacked">Usuario</ion-label>
-      <ion-input type="text" minlength="3" maxlength="8" pattern="[a-zA-Z0-9]*" [(ngModel)]="datos.user"></ion-input>
+      <ion-input type="text" minlength="3" maxlength="8" pattern="[a-zA-Z0-9]*" [(ngModel)]="username"></ion-input>
     </ion-item>
 
     <ion-item>
       <ion-label position="stacked">Contraseña</ion-label>
-      <ion-input type="password" maxlength="4" pattern="[0-9]{4}" [(ngModel)]="datos.pwd"></ion-input>
+      <ion-input type="password" maxlength="4" pattern="[0-9]{4}" [(ngModel)]="password"></ion-input>
     </ion-item>
 
-    <ion-button expand="block" class="ion-margin-top" (click)="login()" >Ingresar</ion-button>
-    <p class="ion-text-center ion-margin-top">
-      <a [routerLink]="">Crea tu cuenta gratis</a>
-    </p>
+    <ion-button expand="block" class="ion-margin-top" (click)="login()" [disabled]="isLoading || !username || !password">
+      <ion-spinner *ngIf="isLoading" name="dots"></ion-spinner>
+      <span *ngIf="!isLoading">Ingresar</span>
+    </ion-button>
+
+    <ion-button expand="block" fill="clear" class="ion-margin-top" [routerLink]="['/register']">
+      ¡Crea tu cuenta gratis!
+    </ion-button>
 
   </ion-list>
 </ion-content>

@@ -1,7 +1,20 @@
-.no-box-list {
-    background: transparent !important; // Quita fondo de la lista
-
-    ion-item {
-        --background: transparent !important; // Quita fondo de los inputs (items)
+ion-header {
+    ion-toolbar {
+        --background: rgb(254, 86, 86);
+        --color: white;
     }
+}
+
+.no-box-list {
+--ion-background-color: transparent;
+}
+ion-item {
+--background: transparent;
+--border-color: rgba(255, 255, 255, 0.2);
+}
+ion-button {
+height: 48px;
+font-size: 1.1em;
+font-weight: bold;
+--border-radius: 8px;
 }
